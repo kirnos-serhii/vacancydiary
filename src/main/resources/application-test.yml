@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vacancydiarytest
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    platform: postgres
+    initialization-mode: ${INITIALIZE_DATABASE_DATA:always}
+    #initialization-mode: always, embedded, never

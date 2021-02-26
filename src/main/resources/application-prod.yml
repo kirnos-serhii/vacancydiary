@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+    initialization-mode: ${INITIALIZE_DATABASE_DATA:never}
+    #initialization-mode: always, embedded, never

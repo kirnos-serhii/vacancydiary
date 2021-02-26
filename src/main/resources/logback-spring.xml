@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="link.toocool" level="DEBUG"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <springProfile name="dev">
+        <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/app.log</file>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <!-- total size of all archive files, if total size > 5GB, it will delete old archived file -->
+                <totalSizeCap>500MB</totalSizeCap>
+                <!-- 60 days to keep -->
+                <maxHistory>7</maxHistory>
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            </encoder>
+        </appender>
+
+        <logger name="org.springframework" level="INFO">
+            <appender-ref ref="FILE-ROLLING"/>
+        </logger>
+        <logger name="org.hibernate" level="ERROR">
+            <appender-ref ref="FILE-ROLLING"/>
+        </logger>
+        <logger name="link.toocool" level="INFO">
+            <appender-ref ref="FILE-ROLLING"/>
+        </logger>
+        <root level="WARN">
+            <appender-ref ref="FILE-ROLLING"/>
+        </root>
+    </springProfile>
+</configuration>
+

@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vacancydiarypostgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    platform: postgres
+    initialization-mode: ${INITIALIZE_DATABASE_DATA:never}
+    #initialization-mode: always, embedded, never
+
+  output:
+    ansi:
+      enabled: always
+
+server:
+  port : 8080
