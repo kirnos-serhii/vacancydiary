@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/vacancydiarytest
+    url: jdbc:postgresql://localhost:5432/vacancydiary_test
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: root
