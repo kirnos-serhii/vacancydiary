@@ -49,6 +49,8 @@ public class AuthenticationAuthorizationTests {
 
     public static final String GET_VACANCIES_URL = "http://localhost:{port}/api/v1/users/{user_id}/vacancies";
 
+    public static final String GET_USERS_URL = "http://localhost:{port}/api/v1/users";
+
     @Value("${jwt.header}")
     private String authorizationHeader;
 
@@ -149,6 +151,52 @@ public class AuthenticationAuthorizationTests {
                 .setUri(GET_VACANCIES_URL
                         .replace("{port}", valueOf(port))
                         .replace("{user_id}", valueOf(USER2_ID)))
+                .setHeader(authorizationHeader, token)
+                .build();
+
+        // When
+        HttpResponse httpVacanciesResponse = HttpClientBuilder.create().build().execute(vacanciesRequest);
+
+        // Then
+        assertThat(
+                httpVacanciesResponse.getStatusLine().getStatusCode(),
+                equalTo(HttpStatus.SC_OK));
+    }
+
+    @Test
+    public void givenUserAuthorized_whenGetUsers_then403IsReceived() throws IOException {
+
+        // Given
+        HttpUriRequest tokenRequest = getTokenRequest(USER1_EMAIL, USER1_PASSWORD);
+        HttpResponse httpTokenResponse = HttpClientBuilder.create().build().execute(tokenRequest);
+        String tokenDtoJson = new String(httpTokenResponse.getEntity().getContent().readAllBytes());
+        String token = objectMapper.readValue(tokenDtoJson, TokenDTO.class).getToken();
+        HttpUriRequest vacanciesRequest = RequestBuilder.create("GET")
+                .setUri(GET_USERS_URL
+                        .replace("{port}", valueOf(port)))
+                .setHeader(authorizationHeader, token)
+                .build();
+
+        // When
+        HttpResponse httpVacanciesResponse = HttpClientBuilder.create().build().execute(vacanciesRequest);
+
+        // Then
+        assertThat(
+                httpVacanciesResponse.getStatusLine().getStatusCode(),
+                equalTo(HttpStatus.SC_FORBIDDEN));
+    }
+
+    @Test
+    public void givenAdminAuthorized_whenGetUsers_then200IsReceived() throws IOException {
+
+        // Given
+        HttpUriRequest tokenRequest = getTokenRequest(ADMIN1_EMAIL, ADMIN1_PASSWORD);
+        HttpResponse httpTokenResponse = HttpClientBuilder.create().build().execute(tokenRequest);
+        String tokenDtoJson = new String(httpTokenResponse.getEntity().getContent().readAllBytes());
+        String token = objectMapper.readValue(tokenDtoJson, TokenDTO.class).getToken();
+        HttpUriRequest vacanciesRequest = RequestBuilder.create("GET")
+                .setUri(GET_USERS_URL
+                        .replace("{port}", valueOf(port)))
                 .setHeader(authorizationHeader, token)
                 .build();
 

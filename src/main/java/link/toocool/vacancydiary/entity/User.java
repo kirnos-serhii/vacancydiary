@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 public class User extends BasicEntity {
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
