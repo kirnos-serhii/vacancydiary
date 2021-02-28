@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 @UserEmailUnique
-public class RegisterUserDTO {
+public class CreateUserDTO {
 
     @Email(message = "Incorrect email address.")
     private String email;

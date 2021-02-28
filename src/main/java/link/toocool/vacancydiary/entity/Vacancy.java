@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,9 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Entity
 @Table(name = "vacancies")
@@ -32,7 +36,7 @@ public class Vacancy extends BasicEntity {
 
     private String link;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @MapsId
     private Contact recruiterContact;
 
@@ -44,4 +48,11 @@ public class Vacancy extends BasicEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public void setStatus(VacancyStatus statusParam) {
+        if ((nonNull(this.status) && !this.status.equals(statusParam))
+                || (isNull(this.status) && nonNull(statusParam))) {
+            lastUpdate = LocalDateTime.now();
+        }
+    }
 }

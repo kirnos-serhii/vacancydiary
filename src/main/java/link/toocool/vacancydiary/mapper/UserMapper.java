@@ -1,6 +1,6 @@
-package link.toocool.vacancydiary;
+package link.toocool.vacancydiary.mapper;
 
-import link.toocool.vacancydiary.dto.user.RegisterUserDTO;
+import link.toocool.vacancydiary.dto.user.CreateUserDTO;
 import link.toocool.vacancydiary.dto.user.UserDTO;
 import link.toocool.vacancydiary.entity.Role;
 import link.toocool.vacancydiary.entity.Status;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    public User userFromDto(RegisterUserDTO userDTO) {
+    public User userFromDto(CreateUserDTO userDTO) {
         User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setRole(Role.USER);

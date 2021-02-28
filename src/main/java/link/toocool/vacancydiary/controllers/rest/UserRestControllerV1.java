@@ -1,7 +1,7 @@
 package link.toocool.vacancydiary.controllers.rest;
 
 import link.toocool.vacancydiary.dto.user.EditUserDTO;
-import link.toocool.vacancydiary.dto.user.RegisterUserDTO;
+import link.toocool.vacancydiary.dto.user.CreateUserDTO;
 import link.toocool.vacancydiary.service.UserService;
 import link.toocool.vacancydiary.util.ControllerUtil;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class UserRestControllerV1 {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO userDTO,
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO userDTO,
                                           BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(ControllerUtil.getErrorMessages(bindingResult));

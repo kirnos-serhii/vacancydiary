@@ -1,8 +1,8 @@
 package link.toocool.vacancydiary.service.impl;
 
-import link.toocool.vacancydiary.UserMapper;
+import link.toocool.vacancydiary.mapper.UserMapper;
 import link.toocool.vacancydiary.dto.user.EditUserDTO;
-import link.toocool.vacancydiary.dto.user.RegisterUserDTO;
+import link.toocool.vacancydiary.dto.user.CreateUserDTO;
 import link.toocool.vacancydiary.dto.user.UserDTO;
 import link.toocool.vacancydiary.entity.User;
 import link.toocool.vacancydiary.exception.RestException;
@@ -30,13 +30,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDTO getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RestException("", HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id).orElseThrow(() -> new RestException("No such user.", HttpStatus.NOT_FOUND));
         return userMapper.dtoFromUser(user);
     }
 
     @Override
     @Transactional
-    public UserDTO createUser(RegisterUserDTO userDTO) {
+    public UserDTO createUser(CreateUserDTO userDTO) {
         User user = userMapper.userFromDto(userDTO);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userMapper.dtoFromUser(userRepository.save(user));

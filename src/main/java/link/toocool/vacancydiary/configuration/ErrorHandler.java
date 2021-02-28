@@ -7,10 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
@@ -23,10 +24,16 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error.");
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<?> handleError404(NoHandlerFoundException e) {
-        log.info("no_handler_found_exception", e);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No adapter for handler.");
+    @ExceptionHandler(ServletException.class)
+    public ResponseEntity<?> handleError404(ServletException e) {
+        log.info("no_supported", e);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No supported.");
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<?> generateHttpMediaTypeNotSupportedExceptionHandler(HttpMediaTypeNotSupportedException e) {
+        log.info("no_supported_media_type", e);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No supported media type.");
     }
 
     @ExceptionHandler(RestException.class)
